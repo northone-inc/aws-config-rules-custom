@@ -1,0 +1,171 @@
+##################################################################################
+#   Conformance Pack: S3 Security Best Practices for CIS Top 20
+##################################################################################
+
+Parameters:
+  S3AccountLevelPublicAccessBlocksParamBlockPublicAcls:
+    Default: 'true'
+    Type: String
+  S3AccountLevelPublicAccessBlocksParamBlockPublicPolicy:
+    Default: 'true'
+    Type: String
+  S3AccountLevelPublicAccessBlocksParamIgnorePublicAcls:
+    Default: 'true'
+    Type: String
+  S3AccountLevelPublicAccessBlocksParamRestrictPublicBuckets:
+    Default: 'true'
+    Type: String
+
+Resources:
+  S3AccountLevelPublicAccessBlocks:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-account-level-public-access-blocks
+      InputParameters:
+        BlockPublicAcls:
+          Fn::If:
+          - s3AccountLevelPublicAccessBlocksParamBlockPublicAcls
+          - Ref: S3AccountLevelPublicAccessBlocksParamBlockPublicAcls
+          - Ref: AWS::NoValue
+        BlockPublicPolicy:
+          Fn::If:
+          - s3AccountLevelPublicAccessBlocksParamBlockPublicPolicy
+          - Ref: S3AccountLevelPublicAccessBlocksParamBlockPublicPolicy
+          - Ref: AWS::NoValue
+        IgnorePublicAcls:
+          Fn::If:
+          - s3AccountLevelPublicAccessBlocksParamIgnorePublicAcls
+          - Ref: S3AccountLevelPublicAccessBlocksParamIgnorePublicAcls
+          - Ref: AWS::NoValue
+        RestrictPublicBuckets:
+          Fn::If:
+          - s3AccountLevelPublicAccessBlocksParamRestrictPublicBuckets
+          - Ref: S3AccountLevelPublicAccessBlocksParamRestrictPublicBuckets
+          - Ref: AWS::NoValue
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::AccountPublicAccessBlock
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_ACCOUNT_LEVEL_PUBLIC_ACCESS_BLOCKS
+
+  S3BucketDefaultLockEnabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-default-lock-enabled
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_DEFAULT_LOCK_ENABLED
+
+  S3BucketLoggingEnabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-logging-enabled
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_LOGGING_ENABLED
+
+  S3BucketPolicyGranteeCheck:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-policy-grantee-check
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_POLICY_GRANTEE_CHECK
+
+  S3BucketPublicReadProhibited:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-public-read-prohibited
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_PUBLIC_READ_PROHIBITED
+
+  S3BucketPublicWriteProhibited:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-public-write-prohibited
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_PUBLIC_WRITE_PROHIBITED
+
+  S3BucketReplicationEnabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-replication-enabled
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_REPLICATION_ENABLED
+
+  S3BucketServerSideEncryptionEnabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-server-side-encryption-enabled
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED
+
+  S3BucketSslRequestsOnly:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-ssl-requests-only
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_SSL_REQUESTS_ONLY
+
+  S3BucketVersioningEnabled:
+    Type: AWS::Config::ConfigRule
+    Properties:
+      ConfigRuleName: s3-bucket-versioning-enabled
+      Scope:
+        ComplianceResourceTypes:
+        - AWS::S3::Bucket
+      Source:
+        Owner: AWS
+        SourceIdentifier: S3_BUCKET_VERSIONING_ENABLED
+
+Conditions:
+  s3AccountLevelPublicAccessBlocksParamBlockPublicAcls:
+    Fn::Not:
+    - Fn::Equals:
+      - ''
+      - Ref: S3AccountLevelPublicAccessBlocksParamBlockPublicAcls
+  s3AccountLevelPublicAccessBlocksParamBlockPublicPolicy:
+    Fn::Not:
+    - Fn::Equals:
+      - ''
+      - Ref: S3AccountLevelPublicAccessBlocksParamBlockPublicPolicy
+  s3AccountLevelPublicAccessBlocksParamIgnorePublicAcls:
+    Fn::Not:
+    - Fn::Equals:
+      - ''
+      - Ref: S3AccountLevelPublicAccessBlocksParamIgnorePublicAcls
+  s3AccountLevelPublicAccessBlocksParamRestrictPublicBuckets:
+    Fn::Not:
+    - Fn::Equals:
+      - ''
+      - Ref: S3AccountLevelPublicAccessBlocksParamRestrictPublicBuckets
